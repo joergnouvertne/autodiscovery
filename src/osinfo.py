@@ -35,6 +35,7 @@ class OSInfo:
             if "suse" in self.get_os_name:
                 with open("/etc/os-release", "r") as fobj:
                     for line in fobj:
+                        print line
                         if "VERSION_ID" in line:
                             os_version = line.split("=")[1].strip()
                     if "." not in os_version:
