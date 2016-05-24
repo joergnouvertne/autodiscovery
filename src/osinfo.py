@@ -20,7 +20,7 @@ class OSInfo:
     def get_os_name(self):
         os_name = self.get_os_type
         if os_name == 'Linux':
-            os_name = platform.linux_distribution()[0]
+            os_name = platform.linux_distribution()[0].strip()
         return os_name
 
     @property
