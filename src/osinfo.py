@@ -8,6 +8,7 @@ class OSInfo:
         self.os_name = self.get_os_name
         self.os_version = self.get_os_version
         self.os_release = self.get_os_release
+        self.machine_type = self.get_machine_type
         self.hostname = self.get_hostname
 
     @property
@@ -56,6 +57,13 @@ class OSInfo:
             return platform.version()
         elif os_type == 'Linux' or os_type == 'MacOS':
             return platform.release()
+        else:
+            return "Unknown"
+
+    @property
+    def get_machine_type(self):
+        if platform.machine():
+            return platform.machine()
         else:
             return "Unknown"
 
