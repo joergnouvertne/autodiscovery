@@ -1,6 +1,7 @@
 import platform
 import re
 
+
 class OSInfo:
     def __init__(self):
         self.os_type = self.get_os_type
