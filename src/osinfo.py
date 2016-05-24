@@ -9,6 +9,7 @@ class OSInfo:
         self.os_version = self.get_os_version
         self.os_release = self.get_os_release
         self.machine_type = self.get_machine_type
+        self.proc_type = self.get_proc_type
         self.hostname = self.get_hostname
 
     @property
@@ -66,6 +67,14 @@ class OSInfo:
             return platform.machine()
         else:
             return "Unknown"
+
+    @property
+    def get_proc_type(self):
+        if platform.processor():
+            return platform.processor()
+        else:
+            return "Unknown"
+
 
     @property
     def get_hostname(self):
