@@ -16,8 +16,6 @@ events.add_string_event("Testevent with the same eventid but different timestamp
 
 events.unset_eventid()
 
-events.set_timeformat("%c")
-
 events.add_string_event("Testevent without eventid and local server timeformat")
 
 events.set_eventid(event_id="bar", label="foo")

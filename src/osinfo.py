@@ -7,6 +7,7 @@ class OSInfo:
         self.os_type = self.get_os_type
         self.os_name = self.get_os_name
         self.os_version = self.get_os_version
+        self.hostname = self.get_hostname
 
     @property
     def get_os_type(self):
@@ -41,6 +42,13 @@ class OSInfo:
                     if "." not in os_version:
                         os_version += ".0"
         return os_version
+
+    @property
+    def get_hostname(self):
+        hostname = 'Unknwon'
+        if platform.node():
+            hostname = platform.node().lower()
+        return hostname
 
     @property
     def get_info(self):
