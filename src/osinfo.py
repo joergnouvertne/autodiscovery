@@ -3,8 +3,9 @@ import platform
 
 class OSInfo:
     def __init__(self):
-        self.os_name = self.get_os_name()
+        self.os_name = self.get_os_name
 
+    @property
     def get_os_name(self):
         os_name = platform.system()
         if os_name == 'Darwin':
