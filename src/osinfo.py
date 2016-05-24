@@ -75,7 +75,6 @@ class OSInfo:
         else:
             return "Unknown"
 
-
     @property
     def get_hostname(self):
         if platform.node():
