@@ -1,10 +1,12 @@
 import time
+import datetime
+import pytz
 import re
 
 
 class EventCollector:
     """
-    Collect events in a list, enriched wit ha predefined timestamp and the option to tag
+    Collect events in a list, enriched with an ISO 8601 compliant timestamp in UTC and the option to tag
     them with an event_id. The event_id can be used later in tools like Splunk to correlate
     events from the same scripts run.
     """
@@ -12,18 +14,17 @@ class EventCollector:
     def __init__(self):
         self.eventlist = []
         self.eventid = None
-        self.timeformat = "%Y-%m-%dT%H:%M:%S%z"
 
     def set_eventid(self, event_id='epochtime', label='event_id'):
         """
         Set an id for a set of events to correlate them in the event management tool
 
         :param label: The label of the identifier, default 'evid'
-        :param event_id: A string which acts as an identifier, default is 'id=epochtimestamp'
+        :param event_id: A string which acts as an identifier, default is 'id=epochtimestamp utc'
         :return: self.eventid
         """
         if event_id == 'epochtime':
-            self.eventid = label + "=" + str(int(time.time()))
+            self.eventid = label + "=" + self.epochtimestamp
         else:
             self.eventid = label + "=" + event_id
 
@@ -34,26 +35,22 @@ class EventCollector:
         """
         self.eventid = None
 
-    def set_timeformat(self, timeformat):
-        """
-        Set the format of the timestamp of each evnt
-        :param timeformat: String used by the time.strftime() function
-        :return: self.timeformat
-        """
-        try:
-            time.strftime(timeformat)
-            self.timeformat = timeformat
-        except:
-            raise TypeError
+    @property
+    def epochtimestamp(self):
+        return str(int(time.mktime(datetime.datetime.now(tz=pytz.utc).timetuple())))
+
+    @property
+    def isotimestamp(self):
+        return datetime.datetime.now(tz=pytz.utc).replace(microsecond=0).isoformat()
 
     def add_string_event(self, eventstring):
         """
         Add a string to the eventtlist, proceeded by the the current time and optionally the eventid
         """
         if self.eventid:
-            self.eventlist.append(time.strftime(self.timeformat) + ' ' + self.eventid + ' ' + eventstring)
+            self.eventlist.append(self.isotimestamp + ' ' + self.eventid + ' ' + eventstring)
         else:
-            self.eventlist.append(time.strftime(self.timeformat) + ' ' + eventstring)
+            self.eventlist.append(self.isotimestamp + ' ' + eventstring)
 
     def add_dict_event(self, event_dict):
         """
