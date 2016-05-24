@@ -32,6 +32,13 @@ class OSInfo:
             os_version = platform.mac_ver()[0]
         elif self.get_os_type == 'Linux':
             os_version = platform.linux_distribution()[1]
+            if "suse" in self.get_os_name:
+                with open("/etc/os-release", "r") as fobj:
+                    for line in fobj:
+                        if "VERSION_ID" in line:
+                            os_version = line.split("=")[1].strip()
+                    if "." not in os_version:
+                        os_version += ".0"
         return os_version
 
     @property
