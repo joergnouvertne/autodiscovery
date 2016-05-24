@@ -3,11 +3,12 @@ import platform
 
 class OSInfo:
     def __init__(self):
+        self.os_type = self.get_os_type
         self.os_name = self.get_os_name
         self.os_version = self.get_os_version
 
     @property
-    def get_os_name(self):
+    def get_os_type(self):
         os_name = platform.system()
         if os_name == 'Darwin':
             os_name = 'MacOS'
@@ -16,12 +17,21 @@ class OSInfo:
         return os_name
 
     @property
+    def get_os_name(self):
+        os_name = self.get_os_type
+        if os_name == 'Linux':
+            os_name = platform.linux_distribution()[0]
+        return os_name
+
+    @property
     def get_os_version(self):
         os_version = 'Unknown'
-        if self.get_os_name == 'Windows':
+        if self.get_os_type == 'Windows':
             os_version = platform.win32_ver()[0]
-        elif self.get_os_name == 'MacOS':
+        elif self.get_os_type == 'MacOS':
             os_version = platform.mac_ver()[0]
+        elif self.get_os_type == 'Linux':
+            os_version = platform.linux_distribution()[1]
         return os_version
 
     @property
