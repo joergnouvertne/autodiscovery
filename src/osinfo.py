@@ -1,5 +1,5 @@
 import platform
-
+import re
 
 class OSInfo:
     def __init__(self):
@@ -32,7 +32,7 @@ class OSInfo:
             os_version = platform.mac_ver()[0]
         elif self.get_os_type == 'Linux':
             os_version = platform.linux_distribution()[1]
-            if "suse" in self.get_os_name:
+            if re.match("SUSE", self.get_os_name):
                 with open("/etc/os-release", "r") as fobj:
                     for line in fobj:
                         print line
