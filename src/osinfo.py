@@ -37,7 +37,7 @@ class OSInfo:
                     for line in fobj:
                         print line
                         if "VERSION_ID" in line:
-                            os_version = line.split("=")[1].strip('"')
+                            os_version = line.split("=")[1].strip().strip('"')
                     if "." not in os_version:
                         os_version += ".0"
         return os_version
