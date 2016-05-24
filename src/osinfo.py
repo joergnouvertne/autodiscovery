@@ -7,31 +7,35 @@ class OSInfo:
         self.os_type = self.get_os_type
         self.os_name = self.get_os_name
         self.os_version = self.get_os_version
+        self.os_release = self.get_os_release
         self.hostname = self.get_hostname
 
     @property
     def get_os_type(self):
         os_name = platform.system()
         if os_name == 'Darwin':
-            os_name = 'MacOS'
+            return 'MacOS'
         elif not os_name:
-            os_name = 'Unknown'
-        return os_name
+            return "Unknown"
+        else:
+            return os_name
 
     @property
     def get_os_name(self):
         os_name = self.get_os_type
         if os_name == 'Linux':
-            os_name = platform.linux_distribution()[0].strip()
-        return os_name
+            return platform.linux_distribution()[0].strip()
+        elif os_name:
+            return os_name
+        else:
+            return "Unknown"
 
     @property
     def get_os_version(self):
-        os_version = 'Unknown'
         if self.get_os_type == 'Windows':
-            os_version = platform.win32_ver()[0]
+            return platform.win32_ver()[0]
         elif self.get_os_type == 'MacOS':
-            os_version = platform.mac_ver()[0]
+            return platform.mac_ver()[0]
         elif self.get_os_type == 'Linux':
             os_version = platform.linux_distribution()[1]
             if re.match("SUSE", self.get_os_name):
@@ -41,14 +45,26 @@ class OSInfo:
                             os_version = line.split("=")[1].strip().strip('"')
                     if "." not in os_version:
                         os_version += ".0"
-        return os_version
+            return os_version
+        else:
+            return "Unknown"
+
+    @property
+    def get_os_release(self):
+        os_type = self.get_os_type
+        if os_type == 'Windows':
+            return platform.version()
+        elif os_type == 'Linux' or os_type == 'MacOS':
+            return platform.release()
+        else:
+            return "Unknown"
 
     @property
     def get_hostname(self):
-        hostname = 'Unknwon'
         if platform.node():
-            hostname = platform.node().lower()
-        return hostname
+            return platform.node().lower()
+        else:
+            return "Unknown"
 
     @property
     def get_info(self):
